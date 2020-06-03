@@ -1,10 +1,10 @@
-import { readFile } from 'fs';
+const fs = require('fs');
 
 FileReader = {
-    readFile: function (fileName, call) {
-        return new Promise((resolve, reject) => {
-            readFile(fileName, 'utf8', (err, contents) => {
-                if (!err) {
+    readFile: function(fileName, call) {
+        return new Promise((resolve, reject)=> {
+            fs.readFile(fileName, 'utf8', (err, contents) =>{
+                if(!err) {
                     resolve(contents);
                 } else {
                     reject(err);
@@ -14,4 +14,4 @@ FileReader = {
     }
 }
 
-export default FileReader;
+module.exports = FileReader;
