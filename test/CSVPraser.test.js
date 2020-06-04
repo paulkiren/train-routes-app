@@ -2,6 +2,7 @@ var assert = require('assert');
 var chai = require('chai');
 var expect = chai.expect;
 should = chai.should();
+const Logger = require('../src/Logger');
 const CSVParser = require('../src/CSVParser');
 
 
@@ -17,7 +18,7 @@ describe('#CSVParser', function () {
                     assert.ok(data);
                     done();
                 }).catch(err => {
-                    console.log(err);
+                   Logger.error(err);
                 });;
         });
     });
