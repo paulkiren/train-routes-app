@@ -1,7 +1,7 @@
 const fs = require('fs');
 
 FileReader = {
-    readFile: function(fileName, call) {
+    readFile: function(fileName) {
         return new Promise((resolve, reject)=> {
             fs.readFile(fileName, 'utf8', (err, contents) =>{
                 if(!err) {
