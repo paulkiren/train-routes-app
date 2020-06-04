@@ -1,74 +1,80 @@
 class Graph {
     constructor() {
-        this.nodes = [];
+        this.stations = [];
         this.adjacencyList = {}
         if (typeof (arguments[0]) === 'object') {
-            arguments[0].forEach(edgeData => {
-                let edgesArray = edgeData.split(',');
-                this.addEdge(...edgesArray);
+            arguments[0].forEach(routeData => {
+                let routesArray = routeData.split(',');
+                this.addRoute(...routesArray);
             });
         }
     }
 
 
 
-    addNode(node) {
-        this.nodes.push(node);
-        this.adjacencyList[node] = [];
+    addStation(station) {
+        this.stations.push(station);
+        this.adjacencyList[station] = [];
     }
-    addEdge(node1, node2, weight) {
-        if (this.nodes.indexOf(node1) === -1) this.addNode(node1);
-        if (this.nodes.indexOf(node2) === -1) this.addNode(node2);
-        this.adjacencyList[node1].push({ node: node2, weight: parseInt(weight, 10) });
-        this.adjacencyList[node2].push({ node: node1, weight: parseInt(weight, 10) });
+    addRoute(station1, station2, distance) {
+        if (this.stations.indexOf(station1) === -1) this.addStation(station1);
+        if (this.stations.indexOf(station2) === -1) this.addStation(station2);
+        this.adjacencyList[station1].push({ station: station2, distance: parseInt(distance, 10) });
+        this.adjacencyList[station2].push({ station: station1, distance: parseInt(distance, 10) });
     }
 
+    isValidStation(station) {
+        return this.stations.indexOf(station) === -1;
+    }
 
-    findPathWithDijkstra(startNode, endNode) {
+    findPathWithDijkstra(startStation, endStation) {
+        if (this.isValidStation(startStation) || this.isValidStation(endStation)) {
+            return 'Error!!: Not a Valid Station';
+        }
+
         let times = {};
         let backtrace = {};
         let pq = new PriorityQueue();
-        times[startNode] = 0;
+        times[startStation] = 0;
 
-        this.nodes.forEach(node => {
-            if (node !== startNode) {
-                times[node] = Infinity
+        this.stations.forEach(station => {
+            if (station !== startStation) {
+                times[station] = Infinity
             }
         });
 
-        pq.enqueue([startNode, 0]);
-        console.log(startNode, endNode);
+        pq.enqueue([startStation, 0]);
 
         while (!pq.isEmpty()) {
             let shortestStep = pq.dequeue();
-            let currentNode = shortestStep[0];
-            this.adjacencyList[currentNode].forEach(neighbor => {
-                let time = times[currentNode] + neighbor.weight;
-                if (time < times[neighbor.node]) {
-                    times[neighbor.node] = time;
-                    backtrace[neighbor.node] = currentNode;
-                    pq.enqueue([neighbor.node, time]);
+            let currentStation = shortestStep[0];
+            this.adjacencyList[currentStation].forEach(neighbor => {
+                let time = times[currentStation] + neighbor.distance;
+                if (time < times[neighbor.station]) {
+                    times[neighbor.station] = time;
+                    backtrace[neighbor.station] = currentStation;
+                    pq.enqueue([neighbor.station, time]);
                 }
             });
         }
 
 
 
-        let path = [endNode];
-        let lastStep = endNode;
-        console.log("Out from Loop", path, lastStep, backtrace, Object.values(backtrace).indexOf(startNode), startNode);
+        let path = [endStation];
+        let lastStep = endStation;
+        console.log("Out from Loop", path, lastStep, backtrace, Object.values(backtrace).indexOf(startStation), startStation);
         ;
         let valuesRet = [...Object.values(backtrace), ...Object.keys(backtrace)];
-        // console.log(valuesRet, valuesRet.indexOf(endNode));
-        if (valuesRet.indexOf(endNode) === -1) {
-            return `No routes from ${startNode} to ${endNode} `;
+        // console.log(valuesRet, valuesRet.indexOf(endStation));
+        if (valuesRet.indexOf(endStation) === -1) {
+            return `No routes from ${startStation} to ${endStation} `;
         }
 
-        while (lastStep !== startNode) {
+        while (lastStep !== startStation) {
             path.unshift(backtrace[lastStep])
             lastStep = backtrace[lastStep]
         }
-        let retString = `Your Trip from ${startNode} to ${endNode} includes ${path.length - 2} stops and will take ${times[endNode]} minutes`
+        let retString = `Your Trip from ${startStation} to ${endStation} includes ${path.length - 2} stops and will take ${times[endStation]} minutes`
 
         return retString;
     }
