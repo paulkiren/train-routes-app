@@ -15,9 +15,3 @@ Find the shortest train routes between two stations using Nodejs.
 ``` bash
 npm test
 ```
-
-## Todo
-
-- Read data from CSV file and represent as graph.
-- add unitest
-- read user iput from command line and print the output
