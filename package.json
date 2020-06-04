@@ -4,8 +4,7 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "test": "mocha",
-    "start": "node src/index.js"
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
