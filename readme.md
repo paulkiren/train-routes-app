@@ -7,6 +7,7 @@ Find the shortest train routes between two stations using Nodejs.
 > ### Run App
 
 ``` bash
+ npm  install
  node .\src\index.js --file=./data/stations.csv
 ```
 
