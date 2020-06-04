@@ -1,36 +1,22 @@
 var FileReader = require('./ReadFile');
 class CSVParser {
-    constructor(fileName) {
-        this.filePath = path;
+    constructor(fileName='.\\data\\stations.csv') {
+        this.filePath = fileName;
         this.rawData = {};
-        this.data = {};
+        this.data = readfile(fileName) | null;
     }
 
     readfile(fileName) {
-
         Logger.info(fileName);
         if (fileName.length > 0) {
             try {
                 FileReader.readFile(fileName).then((data) => {
                     this.rawData = data;
-                    // let parser = new CSVParser(data);
-                    let stationDetails = parser.getTableObject();
-                    Logger.info(stationDetails);
-                    let routes = {};
-                    stationDetails.forEach((item, index) => {
-                        let sourceStation = {};
-                        if (routes[item.column_1]) {
-                            sourceStation = routes[item.column_1];
-                        }
-                        sourceStation[item.column_2] = item.column_3;
-                        routes[item.column_1] = sourceStation;
-
-                    });
-                    Logger.info(routes);
-                })
-                    .catch((err) => {
-                        Logger.error(err);
-                    });
+                    let rowArray = data.split('\n');
+                    return rowArray;
+                }).catch((err) => {
+                    Logger.error(err);
+                });
             } catch (error) {
                 Logger.error(error);
             }
@@ -40,7 +26,19 @@ class CSVParser {
      node .\index.js --file=[Your file name]`);
         }
     }
+
+    getData() {
+        return this.data();
+    }
 }
+// parseCSVData(data) {
+//     if (rowArray && rowArray.length > 0) {
+
+
+//     } else {
+//         throw new CSV_ERROR(`Rows should not be empty`);
+//     }
+// }
 
 
 
@@ -51,16 +49,6 @@ class CSVParser {
 //         this._parseCSVData();
 //     }
 
-//     _parseCSVData() {
-//         let rowArray = this._data.split('\n');
-//         if (rowArray && rowArray.length > 0) {
-//             this._setNoOfRows(rowArray.length);
-//             let columnArray = rowArray[0].split(',');
-//             this._setNoOfColumns(columnArray.length);
-//             this._setTableObject(rowArray);
-//         } else {
-//             throw new CSV_ERROR(`Rows should not be empty`);
-//         }
 
 //     }
 
