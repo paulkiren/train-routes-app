@@ -1,5 +1,13 @@
 const Logger = require('./Logger');
 
+
+
+/**
+ *  
+* Graph Class 
+ * @property {Aarray} stations  # List of dtations [station1,station2,...]
+ * @property {Object} adjacencyList # {Station1:[{station2:distance}]
+ */
 class Graph {
 
     constructor() {
@@ -19,6 +27,13 @@ class Graph {
         this.stations.push(station);
         this.adjacencyList[station] = [];
     }
+
+    /**
+     * 
+     * @param {string: Station One} station1 
+     * @param {string Station Two} station2 
+     * @param {number Distance between Station one and two} distance 
+     */
     addRoute(station1, station2, distance) {
         if (this.stations.indexOf(station1) === -1) this.addStation(station1);
         if (this.stations.indexOf(station2) === -1) this.addStation(station2);
@@ -29,7 +44,13 @@ class Graph {
     isValidStation(station) {
         return this.stations.indexOf(station) === -1;
     }
+    // find the route using dijkstra's algorithm
 
+    /**
+     * 
+     * @param {string :Starting  station name} startStation 
+     * @param {string :End  station name} endStation 
+     */
     findRoute(startStation, endStation) {
         if (this.isValidStation(startStation) || this.isValidStation(endStation)) {
             return 'Error!!: Not a Valid Station';
@@ -80,6 +101,10 @@ class Graph {
     }
 }
 
+/**
+ * For storing the Priority Queue, to find the shortest distance between two stations.
+ * @property {Array}  collection  [[Station,distance]];
+ */
 class PriorityQueue {
     constructor() {
         this.collection = [];
