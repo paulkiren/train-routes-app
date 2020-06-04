@@ -1,32 +1,45 @@
 var Graph = require('./Graph');
-
+var CSVParser = require('./CSVParser');
+const prompt = require('prompt');
+const Logger = require('./Logger');
+Logger.info(process.argv);
+var fileName = process.argv[2]? process.argv[2].split('=')[1]: '';
 (function () {
 
-    let csvData = ['A,B,5',
-        'B,C,5',
-        'C,D,7',
-        'A,D,15',
-        'E,F,5',
-        'F,G,5',
-        'G,H,10',
-        'H,I,10',
-        'I,J,5',
-        'G,J,20']
-    // The input.csv is simple: Each li
-    let data = CSVParser();
-    let csvData2 = data.getData();
+    console.log(arguments);
+    let file= arguments[0]|| null;
+    const csvParser = new CSVParser(file);
+    csvParser.readfile().then(csvData => {
+        let map = new Graph(csvData);
 
-    let map = new Graph(csvData2);
+        const properties = [
+            {
+                name: 'StartStation',
+                validator: /^[a-zA-Z\s\-]+$/,
+                warning: 'Username must be only letters, spaces, or dashes'
+            },
+            {
+                name: 'EndStation',
+                hidden: false
+            }
+        ];
 
-    // console.log(JSON.stringify(map));
+        prompt.start();
 
-    console.log(map.findPathWithDijkstra('E', 'J'));
+        prompt.get(properties, function (err, result) {
+            if (err) { return onErr(err); }
 
-    console.log(map.findPathWithDijkstra('A', 'B'));
+            console.log(map.findRoute(result.StartStation, result.EndStation));
+            // console.log('Command-line input received:');
+            // console.log('  Start_Station: ' + result.StartStation);
+            // console.log('  End_Station: ' + result.EndStation);
+        });
 
-    console.log(map.findPathWithDijkstra('A', 'J'));
+        function onErr(err) {
+            console.log(err);
+            return 1;
+        }
 
-    console.log(map.findPathWithDijkstra('D', 'J'));
+    }).catch(err => console.log(err));
 
-    console.log(map.findPathWithDijkstra('F', 'J'));
-})()
+})(fileName)

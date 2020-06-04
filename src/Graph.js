@@ -1,4 +1,7 @@
+const Logger = require('./Logger');
+
 class Graph {
+
     constructor() {
         this.stations = [];
         this.adjacencyList = {}
@@ -27,7 +30,7 @@ class Graph {
         return this.stations.indexOf(station) === -1;
     }
 
-    findPathWithDijkstra(startStation, endStation) {
+    findRoute(startStation, endStation) {
         if (this.isValidStation(startStation) || this.isValidStation(endStation)) {
             return 'Error!!: Not a Valid Station';
         }
@@ -62,12 +65,9 @@ class Graph {
 
         let path = [endStation];
         let lastStep = endStation;
-        console.log("Out from Loop", path, lastStep, backtrace, Object.values(backtrace).indexOf(startStation), startStation);
-        ;
         let valuesRet = [...Object.values(backtrace), ...Object.keys(backtrace)];
-        // console.log(valuesRet, valuesRet.indexOf(endStation));
         if (valuesRet.indexOf(endStation) === -1) {
-            return `No routes from ${startStation} to ${endStation} `;
+            return `No routes from ${startStation} to ${endStation}`;
         }
 
         while (lastStep !== startStation) {
