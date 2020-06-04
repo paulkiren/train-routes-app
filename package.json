@@ -18,6 +18,8 @@
   },
   "homepage": "https://github.com/paulkiren/train-routes-app#readme",
   "devDependencies": {
+    "chai": "^4.2.0",
     "mocha": "^7.2.0"
-  }
+  },
+  "dependencies": {}
 }
