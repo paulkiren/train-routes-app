@@ -38,7 +38,7 @@ class Graph {
         if (this.stations.indexOf(station1) === -1) this.addStation(station1);
         if (this.stations.indexOf(station2) === -1) this.addStation(station2);
         this.adjacencyList[station1].push({ station: station2, distance: parseInt(distance, 10) });
-        this.adjacencyList[station2].push({ station: station1, distance: parseInt(distance, 10) });
+       // this.adjacencyList[station2].push({ station: station1, distance: parseInt(distance, 10) });
     }
 
     isValidStation(station) {
